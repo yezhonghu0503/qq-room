@@ -54,12 +54,11 @@ def is_process_running(process_name):
     return False
 
 
-time_sleep = 2
 while True:
     # 检查指定程序是否处于打开且窗口界面
     if is_program_open_and_focused(target_program_name, target_program_short):
-        time_sleep = 10
         print(f"{target_program_name} 正在打开且位于窗口界面")
+
     # 可以在这里执行你的其他操作
 
-    time.sleep(time_sleep)  # 休眠时间可以根据需要进行调整
+    time.sleep(2)  # 休眠时间可以根据需要进行调整

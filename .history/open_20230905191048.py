@@ -33,33 +33,25 @@ def check_link(is_check):
 
 
 # 指定要监听的程序名称
-target_program_name = "QQ.exe"
-target_program_short = "QQ"
+target_program_name = "QQ"  # 请根据你要监听的程序名称进行修改
 
 
-def is_program_open_and_focused(program_name, program_short):
-    # 获取当前活动窗口的标题
-    current_window_title = gw.getActiveWindow().title
-    # 检查当前活动窗口是否包含指定程序名称，并且检查指定程序是否正在运行
-    return program_short in current_window_title and is_process_running(program_name)
+def is_window_focused(program_name):
+    # 获取所有窗口
+    windows = gw.getWindowsWithTitle(program_name)
+
+    # 检查窗口是否存在并且最前端
+    if windows:
+        return windows[0].isActive
+    else:
+        return False
 
 
-def is_process_running(process_name):
-    for process in psutil.process_iter(attrs=['pid', 'name']):
-        try:
-            if process.info['name'] == process_name:
-                return True
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
-    return False
-
-
-time_sleep = 2
 while True:
-    # 检查指定程序是否处于打开且窗口界面
-    if is_program_open_and_focused(target_program_name, target_program_short):
-        time_sleep = 10
-        print(f"{target_program_name} 正在打开且位于窗口界面")
+    # 检查指定程序的窗口是否置于最前端
+    if is_window_focused(target_program_name):
+        print(f"{target_program_name} 的窗口在最前端")
+
     # 可以在这里执行你的其他操作
 
-    time.sleep(time_sleep)  # 休眠时间可以根据需要进行调整
+    time.sleep(5)  # 休眠时间可以根据需要进行调整

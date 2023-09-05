@@ -5,10 +5,11 @@ import pyperclip
 import psutil
 import time
 
+# 记录当前活动窗口的标题
+current_window_title = None
+
 
 def check_link(is_check):
-    # 记录当前活动窗口的标题
-    current_window_title = None
     while is_check:
         try:
             # 获取当前活动窗口
@@ -32,34 +33,27 @@ def check_link(is_check):
             break
 
 
-# 指定要监听的程序名称
-target_program_name = "QQ.exe"
-target_program_short = "QQ"
-
-
-def is_program_open_and_focused(program_name, program_short):
-    # 获取当前活动窗口的标题
-    current_window_title = gw.getActiveWindow().title
-    # 检查当前活动窗口是否包含指定程序名称，并且检查指定程序是否正在运行
-    return program_short in current_window_title and is_process_running(program_name)
-
-
-def is_process_running(process_name):
+def get_running_applications():
+    running_apps = []
     for process in psutil.process_iter(attrs=['pid', 'name']):
         try:
-            if process.info['name'] == process_name:
-                return True
+            app_name = process.info['name']
+            running_apps.append(app_name)
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
-    return False
+    return running_apps
 
 
-time_sleep = 2
 while True:
-    # 检查指定程序是否处于打开且窗口界面
-    if is_program_open_and_focused(target_program_name, target_program_short):
-        time_sleep = 10
-        print(f"{target_program_name} 正在打开且位于窗口界面")
+    running_apps = get_running_applications()
+    print("打开的应用程序列表:")
+    for app in running_apps:
+        if app == 'QQ.exe':
+            check_link(True)
+        else:
+            check_link(False)
+
     # 可以在这里执行你的其他操作
 
-    time.sleep(time_sleep)  # 休眠时间可以根据需要进行调整
+    # 休眠一段时间，然后再次检查应用程序列表
+    time.sleep(5)  # 休眠时间可以根据需要进行调整

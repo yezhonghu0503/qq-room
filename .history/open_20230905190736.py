@@ -60,6 +60,8 @@ while True:
     if is_program_open_and_focused(target_program_name, target_program_short):
         time_sleep = 10
         print(f"{target_program_name} 正在打开且位于窗口界面")
+    else:
+        time_sleep = 2
     # 可以在这里执行你的其他操作
 
     time.sleep(time_sleep)  # 休眠时间可以根据需要进行调整
