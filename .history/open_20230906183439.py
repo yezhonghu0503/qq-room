@@ -1,11 +1,9 @@
-import win32gui
 import time
 import pygetwindow as gw
 import pyautogui
 import pyperclip
 import psutil
 import time
-import win32con
 
 
 def check_link(is_check):
@@ -42,25 +40,19 @@ def is_window_focused(program_name):
     # 获取所有窗口
     all_windows = gw.getAllTitles()
 
-    # 检查是否有新窗口被激活
-    if program_name in all_windows:
-        active_window = gw.getWindowsWithTitle(program_name)[0]
-        hwnd = win32gui.FindWindow(None, active_window.title)
+    # 过滤出可见的窗口
+    visible_windows = [title for title in all_windows if gw.getWindowsWithTitle(title)[
+        0].isVisible]
 
-        # 获取窗口的状态
-        placement = win32gui.GetWindowPlacement(hwnd)
-
-        # placement[1] == win32con.SW_SHOWMINIMIZED 表示窗口最小化
-        if placement[1] != win32con.SW_SHOWNORMAL:
-            return False
-
-        return active_window.isActive
+    # 检查窗口是否存在并且最前端
+    if program_name in visible_windows:
+        return True
     else:
         return False
 
 
 while True:
-    # 检查指定程序的窗口是否处于最前端
+    # 检查指定程序的窗口是否置于最前端
     if is_window_focused(target_program_name):
         print(f"{target_program_name} 的窗口在最前端")
 

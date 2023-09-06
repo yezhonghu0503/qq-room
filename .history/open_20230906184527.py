@@ -5,7 +5,10 @@ import pyautogui
 import pyperclip
 import psutil
 import time
-import win32con
+
+import time
+import pygetwindow as gw
+import win32gui
 
 
 def check_link(is_check):
@@ -51,7 +54,7 @@ def is_window_focused(program_name):
         placement = win32gui.GetWindowPlacement(hwnd)
 
         # placement[1] == win32con.SW_SHOWMINIMIZED 表示窗口最小化
-        if placement[1] != win32con.SW_SHOWNORMAL:
+        if placement[1] == win32con.SW_SHOWMINIMIZED:
             return False
 
         return active_window.isActive

@@ -51,7 +51,9 @@ def is_window_focused(program_name):
         placement = win32gui.GetWindowPlacement(hwnd)
 
         # placement[1] == win32con.SW_SHOWMINIMIZED 表示窗口最小化
-        if placement[1] != win32con.SW_SHOWNORMAL:
+        print(placement[1])
+        print(win32con.SW_HIDE)
+        if placement[1] == win32con.SW_SHOWMINIMIZED:
             return False
 
         return active_window.isActive
